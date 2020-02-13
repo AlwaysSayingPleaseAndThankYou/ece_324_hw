@@ -1,15 +1,15 @@
 `timescale 1ns/10ps
-module top;
+module basic_aluTB;
 	logic [1:0] s;
 	logic [3:0] a;
 	logic [3:0] b;
 	logic [3:0] y;
 
-//positional assign rather than name delcaration
-top UUT(.s(s),.a(a),.b(b),.y(y));
-	int _s = 0;
-	int _a = 0;
-	int _b = 0;
+basic_alu UUT(.s(s),.a(a),.b(b),.y(y));
+
+int _s = 0;
+int _a = 0;
+int _b = 0;
 //where does the assert go?
 	//assert((y == a[3:0] + b[3:0]) & (s ==0))
 		//else $error("FAIL: opcode is add(00), input is %b and %b, output is %b",a,b, y);
