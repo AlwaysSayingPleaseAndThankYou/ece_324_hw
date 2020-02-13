@@ -1,8 +1,8 @@
 module basic_alu(s,a,b,y);
-	input [1:0] s;
-	input [3:0] a;
-	input [3:0] b;
-	output [3:0] y;
+	input logic [1:0] s;
+	input logic [3:0] a;
+	input logic [3:0] b;
+	output logic [3:0] y;
 
 always@(*)
 	case(s)
