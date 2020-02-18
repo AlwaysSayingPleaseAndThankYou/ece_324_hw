@@ -2,10 +2,10 @@ module hw4();
 
 // to control clock speed
 localparam T = 20;
-reg clk, reset;
+logic clk, reset;
 logic [1:0] ctrl;
-reg [N-1:0] d;
-logic [N-1:0] q; 
+logic [3:0] d;
+logic [3:0] q; 
 
 // generate a clock signal, and apply a stimulus sequence to the USR inputs.
 // Use the testbench clock to control when the stimulus signals change.
@@ -13,7 +13,7 @@ logic [N-1:0] q;
 // as an example.  
 
 
-univ_shift_reg #((.N(4)) USR(
+univ_shift_reg #(.N(4)) USR(
 	.clk(clk),
 	.reset(reset),
 	.ctrl(ctrl),
@@ -32,8 +32,9 @@ end
 
 // reset at startup
 initial begin 
+    @(negedge clk)
 	reset = 1'b1;
-	#(T/2);
+	@(negedge clk)
 	reset = 1'b0;
 end 
 
@@ -42,7 +43,8 @@ initial begin
 	@(negedge reset);
 	@(negedge clk);
 	ctrl = 2'b11;
-	d = 4'd1010;
+	@(negedge clk)
+	d = 4'b1010;
 	// this should do 4 shift lefts? 
 	@(negedge clk);
 	ctrl = 2'b01;
@@ -54,10 +56,15 @@ initial begin
 	@(negedge clk);
 	ctrl = 2'b10;
 	repeat(4) @(negedge clk);
-	//hold for ten cycles
+	@(negedge clk);
+	ctrl = 2'b11;
+	d = 4'b1111;
+	//hold for 4 cycle
 	@(negedge clk);
 	ctrl = 2'b00;
-	repeat (10) @(negedge clk);
+	repeat(4)@(negedge clk);
+	reset = 1;
+	repeat(2)@(negedge clk);
 	$stop;
 end
 endmodule : hw4
