@@ -39,28 +39,30 @@ end
 
 //testing for opcode 00
 initial begin
-	@(posedge clk);
+	@(negedge reset);
+	@(negedge clk);
 	ctrl = 2'b11;
 	d = 4'd1010;
 	// this should do 4 shift lefts? 
-	repeat(4) @(posedge clk);
+	@(negedge clk);
 	ctrl = 2'b01;
-	// this should clear the register
-	@(posedge clk);
-	reset = 0;
-	//load new values
-	@(posedge clk);
+	repeat(4) @(negedge clk);
+	@(negedge clk);
 	ctrl = 2'b11;
 	d = 4'b0101;
 	//this should test shift right
-	repeat(4) @(posedge clk);
-	ctrl = 2'b10
+	@(negedge clk);
+	ctrl = 2'b10;
+	repeat(4) @(negedge clk);
 	//hold for ten cycles
-	repeat (10) @(posedge clk);
+	@(negedge clk);
 	ctrl = 2'b00;
+	repeat (10) @(negedge clk);
 	$stop;
 end
 endmodule : hw4
+
+//TODO: async reset!?!?
 
 
 
